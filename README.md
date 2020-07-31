@@ -1,6 +1,6 @@
 # Escornabot-Brivoi_Compactus
 
-<img src="Imagenes/portadaOnshape.png"
+<img src="Imagenes/portadaOnshape.png">
 
 Modificaciones a la versión Brivoi Compactus del robot Escornabot.
 
