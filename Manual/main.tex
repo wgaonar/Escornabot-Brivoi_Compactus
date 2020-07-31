@@ -18,6 +18,7 @@
 \usepackage{array}
 \usepackage{longtable}
 \usepackage{multirow}
+\renewcommand{\arraystretch}{1.2}
 \usepackage{siunitx}
 \usepackage{booktabs}
 \usepackage{makecell}
@@ -42,6 +43,13 @@
 \begin{document}
 
 \maketitle
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.5\columnwidth]{images/portadaOnshape.png}
+    \caption{Modelo 3D del Escronabot Brivoi Compactus}
+    \label{fig:modelo3D}
+\end{figure}
 
 \section{Introducción}
 Escornabot es un robot móvil de software y hardware abierto diseñado para la enseñanza de electrónica y programación en niños, adolescentes y no tan niños. Basado en la tarjeta Arduino Nano, destaca la sencillez de su diseño mecánico, electrónico y la estructura del código con el cual funciona. Todo esto ha sido posible por la comunidad que lo desarrolla y mantiene actualizado. Existen diversas versiones y la que corresponde a este manual es la \textbf{Brivoi Compactus} la cual utiliza dos tarjetas de circuitos impresos (PCB):
@@ -76,8 +84,8 @@ La Tabla \ref{tab:componentes_general} detalla la cantidad, descripción y la ta
     1 & Terminal T-block de 5mm para alimentación & - & 1 \\ \hline
     4 & Resistencia 1 K$\Omega$ & 4 & - \\ \hline
     9 & Resistencia 10 K$\Omega$ & 5 & 4\\ \hline
-    1 & Resistencia 18 K$\Omega$ & - & 1 \\ \hline
-    1 & Resistencia 22 K$\Omega$ & 1 & -\\ \hline
+    1 & Resistencia 18 K$\Omega$ o de 20K$\Omega$ & - & 1 \\ \hline
+    1 & Resistencia 22 K$\Omega$ o de 20K$\Omega$ & 1 & -\\ \hline
     1 & Led de 3mm Azul & 1 & - \\ \hline
     1 & Led de 3mm Rojo &  1 & - \\ \hline
     1 & Led de 3mm Amarillo&  1 & - \\ \hline
@@ -86,8 +94,8 @@ La Tabla \ref{tab:componentes_general} detalla la cantidad, descripción y la ta
     7 & Pines/headers macho a 90\degree & 7 & - \\ \hline
     8 & Pines/headers macho rectos  & - & 8 \\ \hline
     1 & Puente o Jumper para pines rectos  & - & 1 \\ \hline
-    2 & Tira de 15 pines  & - & 2 \\ \hline
-    1 & Tira de 4 pines hembra para conectar Adapador Bluetooth & - & 1 \\ \hline
+    2 & Tira de 15 pines hembra que serán la base sobre la cual se colocará el Arduino Nano & - & 2 \\ \hline
+    1 & Tira de 4 pines hembra si posteriormente se desea conectar un adaptador Bluetooth para conectar el robot con una aplicación para teléfono móvil. & - & 1 \\ \hline
     1 & Interruptor de alimentación SK12D07 & - & 1 \\ \hline
     2 & Conector macho para motor paso a paso JST-XHP-S & - & 1 \\ \hline
     1 & Buzzer pasivo para Arduino & - & 1 \\ \hline
@@ -104,14 +112,14 @@ A continuación se detalla el proceso de ensamble de las partes, componentes y t
 \subsection{Lista de componentes de la Botonera}
 La Tabla \ref{tab:componentes_botonera} muestra a detalle la cantidad de los componentes, la etiqueta en la tarjeta y la función que desempeñan.
 
-\begin{longtable}{|c|l|c|m{0.4\textwidth}|}
+\begin{longtable}{|c|>{\raggedright}m{0.2\textwidth}|>{\centering}m{0.15\textwidth}|m{0.45\textwidth}|}
     \caption{Descripción y funcionamiento de los componentes requeridos para la botonera} \label{tab:componentes_botonera} \\ \hline 
-    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{CANTIDAD}} &
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{CANT.}} &
     \multicolumn{1}{c}{\cellcolor[HTML]{C0C0C0}\textbf{DESCRIPCIÓN}} & 
     \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{ETIQUETA}} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{FUNCIÓN}} \\ \hline 
     \endfirsthead
     \caption{Componentes requeridos para la botonera - Continuación} \\ \hline
-    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{\makecell{CANTIDAD}}} &
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{\makecell{CANT.}}} &
     \multicolumn{1}{c}{\cellcolor[HTML]{C0C0C0}\textbf{DESCRIPCIÓN}} & 
     \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{ETIQUETA}} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{FUNCIÓN}} \\ \hline 
     \endhead
@@ -124,8 +132,8 @@ La Tabla \ref{tab:componentes_botonera} muestra a detalle la cantidad de los com
             \item El botón S3 conectado con R3 selecciona un movimiento hacia ATRÁS.
             \item El botón S5 conectado con R4 ejecuta la secuencia de movimientos introducida, es decir, es el botón: GO.
         \end{itemize} \\ \cline{3-4}
-        &  & R7 & \textcolor{red}{Opcional:} Está presente en la botonera en caso de que se utilice una tarjeta de control diferente a la EscornaCPU versión 1.2 y en la que no se utilice la resistencia interna de PULL-UP del Arduino Nano. En el firmware del robot se tendría que definir la palabra clave: KEYBOARD\_WIRES con el valor de 3. Por previsión, esta resistencia se puede soldar. \\ \hline
-        1 & Resistencia 22 K$\Omega$ & R5 & La última resistencia  del divisor de voltaje: 
+        &  & R7 & \textcolor{red}{Opcional:} Está presente en la botonera en caso de que se utilice una tarjeta de control diferente a la EscornaCPU V1.2 y en la que no se utilice la resistencia interna de PULL-UP del Arduino Nano. En el firmware del robot se tendría que definir la palabra clave: KEYBOARD\_WIRES con el valor de 3. Por precaución, esta resistencia se puede soldar. \\ \hline
+        1 & Resistencia 22 K$\Omega$ o de 20 K$\Omega$ & R5 & La última resistencia  del divisor de voltaje: 
         \begin{itemize}
             \item El botón S4 conectado con R5 selecciona un giro hacia la DERECHA.
         \end{itemize}\\ \hline
@@ -295,39 +303,28 @@ La conexión con la placa EscornaCPU que contiene al Arduino Nano se realiza a t
 
 \section{Ensamble y soldadura de la tarjeta de control EscornaCPU V1.2}
 \subsection{Lista de componentes de la tarjeta de control}
-\begin{longtable}{|c|l|c|m{0.4\textwidth}|}
+\begin{longtable}{|c|>{\raggedright}m{0.15\textwidth}|>{\centering}m{0.15\textwidth}|m{0.5\textwidth}|}
     \caption{Descripción y funcionamiento de los componentes requeridos para la tarjeta de control} \label{tab:componentes_tarjeta_de_control} \\ \hline 
-    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{CANTIDAD}} &
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{CANT.}} &
     \multicolumn{1}{c}{\cellcolor[HTML]{C0C0C0}\textbf{DESCRIPCIÓN}} & 
     \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{ETIQUETA}} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{FUNCIÓN}} \\ \hline 
     \endfirsthead
     \caption{Componentes requeridos para la botonera - Continuación} \\ \hline
-    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{\makecell{CANTIDAD}}} &
+    \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{\makecell{CANT.}}} &
     \multicolumn{1}{c}{\cellcolor[HTML]{C0C0C0}\textbf{DESCRIPCIÓN}} & 
     \multicolumn{1}{|c|}{\cellcolor[HTML]{C0C0C0}\textbf{ETIQUETA}} & \multicolumn{1}{c|}{\cellcolor[HTML]{C0C0C0}\textbf{FUNCIÓN}} \\ \hline 
     \endhead
-    1 & Arduino Nano & Arduino Nano & Tarjeta de desarrollo y programación basada en el microcontrolador ATmega328 \\ \hline  
-    4 & Resistencia 1 K$\Omega$ & R6, R8, R9, R10 & Resistencia para la activación de los Leds de la botonera. \\ \hline
-        \multirow{2}{*}{5} 
-        & \multirow{2}{*}{Resistencia 10 K$\Omega$} & R1, R2, R3, R4  & Conforman el divisor de voltaje en conjunto con los botones para obtener diferentes valores de acuerdo al botón o switch que se ha presionado y así controlar el movimiento deseado:
-        \begin{itemize}
-            \item El botón S1 conectado con R1 selecciona un movimiento hacia ADELANTE.
-            \item El botón S2 conectado con R2 selecciona un giro hacia la IZQUIERDA.
-            \item El botón S3 conectado con R3 selecciona un movimiento hacia ATRÁS.
-            \item El botón S5 conectado con R4 ejecuta la secuencia de movimientos introducida, es decir, es el botón: GO.
-        \end{itemize} \\ \cline{3-4}
-        &  & R7 & \textcolor{red}{Opcional:} Está presente en la botonera en caso de que se utilice una tarjeta de control diferente a la EscornaCPU versión 1.2 y en la que no se utilice la resistencia interna de PULL-UP del Arduino Nano. En el firmware del robot se tendría que definir la palabra clave: KEYBOARD\_WIRES con el valor de 3. Por previsión, esta resistencia se puede soldar. \\ \hline
-        1 & Resistencia 22 K$\Omega$ & R5 & La última resistencia  del divisor de voltaje: 
-        \begin{itemize}
-            \item El botón S4 conectado con R5 selecciona un giro hacia la DERECHA.
-        \end{itemize}\\ \hline
-        1 & Led de 3mm Azul & LED1 & Led indicador de un movimiento hacia ADELANTE. \\ \hline
-        1 & Led de 3mm Rojo & LED2 & Led indicador de un movimiento hacia IZQUIERDA. \\ \hline
-        1 & Led de 3mm Amarillo & LED3 & Led indicador de un movimiento hacia ATRÁS. \\ \hline
-        1 & Led de 3mm Verde & LED4 & Led indicador de un movimiento hacia DERECHA. \\ \hline
-        \multirow{2}{*}{5}
-        & \multirow{2}{*}{Pulsadores de 12mm} & S1, S2, S3, S4 & Botones para elegir los movimientos a realizar (ADELANTE, IZQUIERDA, ATRÁS Y DERECHA).\\ \cline{3-4}
-        & & S5 & Botón GO que ejecuta la secuencia de los movimientos elegidos.\\ \hline 
+    1 & Arduino Nano & Arduino Nano & Tarjeta de desarrollo y programación basada en el microcontrolador ATmega328 \\ \hline
+    1 & Driver ULN2803 & IC1 ULN2803 & Circuito integrado que es el enlace o interfaz entre las señales de control provenientes del Arduino Nano y los motores paso a paso 28BYJ-48. \newline \textbf{Nota:} \textcolor{red}{Este circuito no se solda}, se coloca sobre un zócalo o base que si irá soldado a la tarjeta. \\ \hline
+    1 & Zócalo de 18 pines & IC1 ULN2803 & Base que soldada a la tarjeta sobre la que se coloca el driver ULN2803. \\ \hline
+    1 & Terminal T-block & GND $+$ & Terminal de tornillos a los que se conectarán los cables provenientes del portapilas que alimentará la tarjeta de control y los motores paso a paso. \\ \hline
+    \multirow{2}{*}{4} & \multirow{2}{4em}{Resistencia 10 K$\Omega$} & R1 & \textcolor{red}{Opcional:} Está presente en la tarjeta de control en caso de que se utilice una botonera diferente a la E\_KeyPad V2.2 que no cuente con esta resistencia y que no se utilice la resistencia interna de PULL\_UP del Arduino Nano. En el firmware del robot se tendría que definir la palabra clave: KEYBOARD\_WIRES con el valor de 3. Por precaución, esta resistencia se puede soldar. \\ \cline{3-4}
+    &  & R2 & La primera resistencia del divisor de voltaje que reduce el voltaje de 5.0V a 3.3V que va desde el pin 1 del Arduino hacia el pin de transmisión del adaptador Bluetooth, en caso de que se desea conectar y utilizar. \\ \cline{3-4}
+    &  & R4, R5 & \textcolor{red}{Opcionales:} Están presentes en la tarjeta de control en caso de que se desea conectar el Escornabot a una red WiFi a través de un módulo un ESP-01.  \\ \hline
+    1 & Resistencia 18 K$\Omega$ o 20 K$\Omega$ & R3 & La segunda resistencia del divisor de voltaje que reduce el voltaje de 5.0V a 3.3V que va desde el pin 1 del Arduino hacia el pin de transmisión del adaptador Bluetooth, en caso de que se desea conectar y utilizar. \\ \hline
+    \multirow{2}{*}{8} & \multirow{2}{0.15\textwidth}{Pines / headers macho rectos} & A0, A1, A2, A3, A7, GND & 6 Pines de conexión con la tarjeta de la botonera. \\ \cline{3-4}
+    & & BUZZ ON & 2 Pines que permitirán activar / desactivar de forma manual el buzzer del Escornabot a través de la colocación de un puente o Jumper para pines rectos. \\ \hline
 \end{longtable}
+
 
 \end{document}
